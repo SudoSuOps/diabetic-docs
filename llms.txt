@@ -16,7 +16,7 @@ output with their own body, so every cook is 5-cap (premium), deeded, beat-base-
 ## Dev guides
 - [Overview](https://diabeticdocs.com/): the whole ecosystem in one place.
 - [The Why](https://diabeticdocs.com/the-why): why OpenDiabetic is a slow cooker — the founding mission, truth over compromise.
-- [The Ecosystem](https://diabeticdocs.com/ecosystem): the surfaces — OpenDiabetic, LocalDiabetic, DiabeticTruth, DiabeticDatasets, DiabeticModels, DiabeticDonation.
+- [The Ecosystem](https://diabeticdocs.com/ecosystem): the surfaces of the house — OpenDiabetic, LocalDiabetic, DiabeticTruth, DiabeticDatasets, DiabeticModels, DiabeticLedger, DiabeticNode, DiabeticDonation.
 - [Crockpot Cook](https://diabeticdocs.com/crockpot-cook): the full how-to — clean rig, pull a deeded dataset, canary-then-cook, flightsheet, beat-base, ship. Real commands.
 - [Datasets](https://diabeticdocs.com/datasets): find, verify (SHA-256), and pull the deeded corpora. Crystal-clear.
 - [The Doctrine](https://diabeticdocs.com/doctrine): the non-negotiables — 5-cap-only, best-in-class-not-budget, clean-rig, crystal-clear, deeded, beat-base-or-kill, visible, firewall.
@@ -25,9 +25,14 @@ output with their own body, so every cook is 5-cap (premium), deeded, beat-base-
 
 ## The ecosystem
 - OpenDiabetic (the hive — sovereign compute + trust): https://opendiabetic.com
-- DiabeticTruth (the cited patient facts): https://diabetictruth.org
+- DiabeticDocs (the docs — single source of truth): https://diabeticdocs.com
+- DiabeticNode (the compute — Blackwell fleet, Synology vaults, Jetson edge, the device swarm): https://diabeticnode.com
 - DiabeticDatasets (the cookbook — open, deeded datasets): https://diabeticdatasets.com
 - DiabeticModels (the builds — show + host): https://diabeticmodels.com
+- DiabeticTruth (the cited patient facts): https://diabetictruth.org
 - DiabeticLedger (the proof — deeds + hash-chained receipts, audit provenance independently): https://diabeticledger.com
-- DiabeticNode (the compute — Blackwell fleet, Synology vaults, Jetson edge, the device swarm): https://diabeticnode.com
 - DiabeticDonation (the give-back — rides, shoes, the continuum): https://diabeticdonation.com
+- LocalDiabetic (the healers — home vault + on-device helper): https://localdiabetic.com
+
+## Operator
+Owned & operated by Swarm and Bee LLC (DBA Swarm & Bee AI), Florida. SAM UEI L9EXVH9L9VU6 · CAGE 20YM3 · D-U-N-S 138652395. Registered & active in SAM.gov. Contact: build@opendiabetic.com · Jupiter, Florida · 561.532.7120 · https://x.com/opendiabetics

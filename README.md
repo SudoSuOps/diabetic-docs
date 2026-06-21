@@ -18,7 +18,7 @@ Every component carries a status label: **LIVE** (running + verified), **IN BUIL
 |---|---|
 | `index.html` | Overview — the whole ecosystem in one place |
 | `the-why.html` | Why OpenDiabetic is a slow cooker — the founding mission |
-| `ecosystem.html` | The six surfaces and how they connect |
+| `ecosystem.html` | The surfaces of the house and how they connect |
 | `crockpot-cook.html` | The full cook how-to — clean rig → dataset → canary → flightsheet → beat-base → ship |
 | `datasets.html` | Find, verify (SHA-256), and pull the deeded corpora |
 | `doctrine.html` | The non-negotiables — 5-cap-only, best-in-class, clean-rig, crystal-clear, deeded, beat-base, visible |
@@ -32,8 +32,11 @@ Pushes to `main` auto-deploy.
 
 ## The ecosystem
 - [OpenDiabetic](https://opendiabetic.com) — the hive (sovereign compute + trust)
-- LocalDiabetic — the healers (home vault + on-device helper)
-- [DiabeticTruth](https://diabetictruth.org) — the cited patient facts
+- [DiabeticDocs](https://diabeticdocs.com) — the docs (single source of truth)
+- [DiabeticNode](https://diabeticnode.com) — the compute (Blackwell fleet, Synology vaults, Jetson edge, the device swarm)
 - [DiabeticDatasets](https://diabeticdatasets.com) — the cookbook (open, deeded datasets)
 - [DiabeticModels](https://diabeticmodels.com) — the builds (show + host)
+- [DiabeticTruth](https://diabetictruth.org) — the cited patient facts
+- [DiabeticLedger](https://diabeticledger.com) — the proof (deeds + hash-chained receipts)
 - [DiabeticDonation](https://diabeticdonation.com) — the give-back (rides, shoes, the continuum)
+- [LocalDiabetic](https://localdiabetic.com) — the healers (home vault + on-device helper)
