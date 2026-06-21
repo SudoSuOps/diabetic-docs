@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crockpot Cook — the full how-to | DiabeticDocs</title>
+<meta name="description" content="The complete, reproducible guide to crockpot-cooking a diabetic model on the OpenDiabetic platform: clean the rig, pull a deeded dataset, canary-then-cook, flightsheet, beat-base, ship. Real commands. Worked example: DiabeticAnchor-27B.">
+<link rel="canonical" href="https://diabeticdocs.com/crockpot-cook">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"Crockpot-cook a diabetic model on OpenDiabetic",
+ "url":"https://diabeticdocs.com/crockpot-cook","inLanguage":"en","dateModified":"2026-06-21",
+ "publisher":{"@type":"Organization","name":"OpenDiabetic","url":"https://opendiabetic.com"}}
+</script>
+</head>
+<body>
+<header>
+  <nav class="top"><strong>🐝 DiabeticDocs</strong>
+    <a href="/">Overview</a> <a href="/the-why">Why</a> <a href="/ecosystem">Ecosystem</a> <a href="/crockpot-cook">Crockpot Cook</a>
+    <a href="/datasets">Datasets</a> <a href="/doctrine">Doctrine</a>
+    <a href="/the-firewall">Firewall</a> <a href="/architecture">Architecture</a>
+  </nav>
+</header>
+
+<h1>Crockpot Cook — the full how-to</h1>
+<div class="lede">
+  <p>This is how a dev team crockpot-cooks a diabetic model on OpenDiabetic compute, end to end. It's a
+  <b>slow cooker</b> on purpose: every stage is verified before the next begins. The output is a
+  <b>5-cap</b> model — flagship-grade or it doesn't get plated. → <a href="/doctrine">why 5-cap-only</a></p>
+  <p style="margin-bottom:0">Worked example throughout: <b>DiabeticAnchor-27B</b> — the inaugural dish on
+  the <i>Diabetic Crockpot Cooks</i> menu (Qwen3.6-27B base · 417,176 deeded clinical rows · 2× RTX PRO
+  6000 Blackwell).</p>
+</div>
+
+<h2>The pipeline at a glance</h2>
+<pre><code>clean rig → pull deeded dataset (verify SHA) → recipe → CANARY → flightsheet
+   → fire the cook (best-in-class, thermal-managed) → beat-base A/B → ship to the menu</code></pre>
+<p>No stage is skipped. A failure at any stage means re-cook (v+1) or kill — never demote.</p>
+
+<h2>Step 1 · Clean the rig</h2>
+<p>We never cook on a dirty rig. Full pre-flight evaluation first — inventory the GPUs, evict any slop,
+confirm the silicon is healthy and idle. The rigs are senior managing directors; we preserve them.</p>
+<pre><code># inventory — what's loaded, what's running
+nvidia-smi --query-compute-apps=pid,process_name,used_memory --format=csv
+nvidia-smi --query-gpu=index,name,temperature.gpu,ecc.errors.uncorrected.volatile.total,\
+  clocks_throttle_reasons.active --format=csv
+
+# evict idle/competing models, confirm VRAM free + 0 ECC errors, THEN cook</code></pre>
+<p class="law"><b>Rule:</b> never run before a full rig evaluation. A contended GPU spills to CPU and
+silently corrupts your pace and your cook.</p>
+
+<h2>Step 2 · Pull a deeded dataset (and verify it yourself)</h2>
+<p>Cooks are only as honest as their corpus. Pull from <a href="https://diabeticdatasets.com">DiabeticDatasets</a>
+and <b>verify the SHA-256 against the catalog</b> before you trust a single row. Full walkthrough on the
+<a href="/datasets">Datasets</a> page. The short version:</p>
+<pre><code># every dataset in catalog.json carries: rows, size, sha256, deed
+# download, then verify — crystal-clear means YOU check the file
+python3 download_corpus.py          # boto3 → Tigris, SHA-verify each file
+# → "sha256 OK  rows=417136 (expected 417136)"  ✓ deeded + verified</code></pre>
+<p>Then build your splits — and <b>dedup honestly</b>. On DiabeticAnchor-27B, a content-hash dedup caught
+that 5 "specialty" sets were a subset of the 417K superset: the claimed 554K was really
+<b>417,176 unique</b>. We publish the honest number, never the inflated one. → <a href="/doctrine#crystal-clear">crystal-clear</a></p>
+
+<h2>Step 3 · The recipe (gold standard)</h2>
+<p>One canonical recipe, tier-adjusted. LoRA on <b>attention + MLP only</b> (q/k/v/o + gate/up/down) —
+<b>not</b> the linear-attention/GDN state-mixers (over-engineering the MLP already reaches every layer).
+Disciplined, proven, not fancy.</p>
+<table>
+<tr><th>Tier</th><th>LR</th><th>LoRA r / α</th><th>Epoch cap</th><th>Notes</th></tr>
+<tr><td>4B edge</td><td>2e-5</td><td>32 / 16</td><td>0.7</td><td>mobile specialist</td></tr>
+<tr><td>9B ops</td><td>~1.5e-5</td><td>32 / 16</td><td>0.6</td><td>analysis tier</td></tr>
+<tr><td><b>27B anchor</b></td><td>1e-5</td><td>32 / 16</td><td>0.5</td><td>clinician foundation</td></tr>
+</table>
+<p>Bigger models on bigger corpora overfit faster per example — that's <i>why</i> larger tiers run smaller
+epoch fractions. The cap is a quality choice, never a time-saver. Early-stopping + load-best-checkpoint
+governs the real endpoint. Framework: <b>Unsloth</b> (not vanilla — vanilla falls back to slow torch on
+Qwen's GDN layers).</p>
+
+<h2>Step 4 · Canary — then cook</h2>
+<p>Before any full burn, run a smoke test that exercises the entire pipeline on a tiny slice: model load →
+LoRA → a few steps → eval → save → <b>merge</b>. The canary's whole job is to fail cheap.</p>
+<pre><code>CUDA_VISIBLE_DEVICES=0 python3 cook.py --smoke-test   # 500 rows, ~7 steps</code></pre>
+<p>On DiabeticAnchor-27B the canary earned its keep three times over — it caught two real
+<b>Blackwell (sm_120)</b> blockers before we burned a single hour of the full cook:</p>
+<table>
+<tr><th>Caught</th><th>Fix</th></tr>
+<tr><td><code>flash_attn</code>/<code>xformers</code> have no sm_120 kernels → <code>cudaErrorNoKernelImageForDevice</code></td><td>Load with <code>attn_implementation="sdpa"</code> (torch-native, works on Blackwell); clear <code>unsloth_compiled_cache</code></td></tr>
+<tr><td>transformers-v5 meta-tensor lm_head (248K vocab) → <code>Cannot copy out of meta tensor</code> in <code>fix_untrained_tokens</code></td><td>Skip that check via <code>UNSLOTH_IGNORED_TOKENIZER_NAMES</code> (safe — corpus adds no new tokens)</td></tr>
+</table>
+<p><b>Lesson logged in the docs:</b> a small-dataset canary misses scale-dependent bugs (the meta-tensor
+crash only fired on the full 417K token scan). For a flagship, also smoke-test trainer-init on the full data.</p>
+
+<h2>Step 5 · The flightsheet</h2>
+<p>Every cook gets a <b>flightsheet</b> — the formal record an auditor, customer, or future engineer can read
+to know exactly what happened. Five sections: <b>pre-flight</b> (intent, config, corpus SHA, hardware,
+projections) · <b>canary</b> (smoke results, fixes) · <b>in-flight</b> (loss/eval/thermal receipts) ·
+<b>post-flight</b> (final eval, beat-base A/B) · <b>SR-hack sign-off</b> (3 stages). The flightsheet hash
+becomes the cook's defendable receipt. No flightsheet, no cook.</p>
+
+<h2>Step 6 · Fire the cook — best-in-class, thermal-managed</h2>
+<pre><code>CUDA_VISIBLE_DEVICES=0 nohup python3 cook.py &gt; cook.log 2&gt;&amp;1 &amp;   # detached; survives the session</code></pre>
+<p>We do <b>not</b> trim a cook for time, energy, or cost — we own the rigs and the electrons; quality is the
+only axis. We <i>do</i> manage thermals to preserve the hardware. On DiabeticAnchor-27B the Blackwell pinned
+90 °C at its 600 W ceiling for a ~24 h burn, so we capped power for longevity — not speed:</p>
+<pre><code>sudo nvidia-smi -i 0 -pl 500     # 600W→500W : 90°C → 86°C, cook uninterrupted</code></pre>
+<p>Watch the loss trajectory in blocks; eval every ~100 steps; let early-stopping take the best checkpoint.</p>
+
+<h2>Step 7 · Beat-base or kill</h2>
+<p>A cook is not "done" because the loss fell. It's done when it <b>beats the base model</b> on a held-out
+A/B with deterministic gates (structure, concept coverage, format) — think-off, decode deterministically,
+score by rule, no LLM-judge. If it doesn't beat base, it's killed or re-cooked. The A/B result is a receipt
+in the flightsheet.</p>
+
+<h2>Step 8 · Ship to the menu</h2>
+<p>Only a beat-base-proven, flightsheet-signed cook earns a plate on the <b>Diabetic Crockpot Cooks</b> menu
+and a published home on <a href="https://diabeticmodels.com">DiabeticModels</a> / the model org —
+weights, flightsheet, and A/B receipt together. Show + host. No black box. The model then <b>flows down</b>
+to the LocalDiabetic edge brain on a diabetic's own box — and PHI never flows back. → <a href="/the-firewall">The Firewall</a></p>
+
+<h2>Read next</h2>
+<ul>
+  <li><a href="/datasets">Datasets</a> — find, verify, and pull the deeded corpora.</li>
+  <li><a href="/doctrine">The Doctrine</a> — the rules every step above encodes.</li>
+</ul>
+
+<footer>
+  <p>Reproducible by anyone — that's the point. Powered by <a href="https://opendiabetic.com">OpenDiabetic</a>.</p>
+</footer>
+</body>
+</html>

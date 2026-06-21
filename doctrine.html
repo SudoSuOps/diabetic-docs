@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Doctrine — the non-negotiables | DiabeticDocs</title>
+<meta name="description" content="The OpenDiabetic cook doctrine: 5-cap-only, best-in-class-not-budget, clean-rig, crystal-clear, deeded, beat-base-or-kill, visible, PHI-firewall. The rules every diabetic model cook follows.">
+<link rel="canonical" href="https://diabeticdocs.com/doctrine">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"TechArticle","name":"The Doctrine — OpenDiabetic cook rules",
+ "url":"https://diabeticdocs.com/doctrine","inLanguage":"en","dateModified":"2026-06-21",
+ "publisher":{"@type":"Organization","name":"OpenDiabetic","url":"https://opendiabetic.com"}}
+</script>
+</head>
+<body>
+<header>
+  <nav class="top"><strong>🐝 DiabeticDocs</strong>
+    <a href="/">Overview</a> <a href="/the-why">Why</a> <a href="/ecosystem">Ecosystem</a> <a href="/crockpot-cook">Crockpot Cook</a>
+    <a href="/datasets">Datasets</a> <a href="/doctrine">Doctrine</a>
+    <a href="/the-firewall">Firewall</a> <a href="/architecture">Architecture</a>
+  </nav>
+</header>
+
+<h1>The Doctrine</h1>
+<div class="lede">
+  <p style="margin-bottom:0">These are the non-negotiables. They encode <a href="/the-why">truth over
+  compromise</a> into rules a dev team can follow without having to re-derive the stakes every time. Break
+  one and it isn't an OpenDiabetic cook.</p>
+</div>
+
+<h2 id="five-cap">1 · 5-cap only</h2>
+<p>The <b>Diabetic Crockpot Cooks</b> menu has exactly one tier: <b>5-cap</b> (premium, A+, full discipline).
+No experimental side-cooks, no proofs-of-pipeline dressed as dishes. A cook that fails a gate is re-cooked
+(v+1) or killed — <b>never demoted</b> onto the menu at a lower cap. Flagship-grade or it doesn't get plated.</p>
+
+<h2 id="best-in-class">2 · Best-in-class, never budget</h2>
+<p>We own the rigs and the electrons. Cooks are judged on <b>one axis: is it best-in-class?</b> We never trim
+epoch length or steps to save time, energy, or money. Training length is a <i>quality</i> choice, governed by
+early-stopping (the overcook guard), not the clock. Energy is tracked as a <b>receipt</b> (provenance),
+never as a constraint.</p>
+
+<h2 id="clean-rig">3 · Clean the rig</h2>
+<p>Never cook before a full rig evaluation. Inventory the GPUs, evict slop, confirm the silicon is healthy
+and idle, then cook. A contended GPU spills to CPU and silently corrupts the run. The rigs are senior
+managing directors — <b>preserve the hardware</b> (cap power for thermals on long burns).</p>
+
+<h2 id="crystal-clear">4 · Crystal-clear datasets</h2>
+<p>"Open" means <b>the recipient can verify it themselves</b>: schema, real samples, exact size, SHA-256 —
+inline, before download. Metadata-only "open" is trust-me-bro. And dedup honestly: publish the true unique
+count, never the inflated sum of overlapping parts.</p>
+
+<h2 id="deeded">5 · Deeded provenance</h2>
+<p>Every dataset and every cook carries a deed/receipt — tribunal-graded, hash-chained, publicly anchored.
+Provenance is verifiable independent of us. Verifiability is the moat.</p>
+
+<h2 id="beat-base">6 · Beat-base or kill</h2>
+<p>A model is not "good" because the loss fell. It must <b>beat the base model</b> on a held-out A/B with
+deterministic gates — think-off, deterministic decode, rule-scored, no LLM-judge. The A/B result is a
+receipt. No beat-base, no ship.</p>
+
+<h2 id="canary">7 · Canary, then cook</h2>
+<p>Always smoke-test the full pipeline (load → LoRA → steps → eval → save → merge) before the full burn.
+The canary's job is to fail cheap. Also smoke-test trainer-init on the <i>full</i> dataset — some bugs are
+scale-dependent and a small canary will miss them.</p>
+
+<h2 id="visible">8 · Visible — no black box</h2>
+<p>Every cook is a <b>flightsheet</b> anyone can audit: intent, config, corpus SHA, canary fixes, in-flight
+receipts, beat-base A/B, sign-off. We show the math. The "AI trust-me-bro" era is over.</p>
+
+<h2 id="firewall">9 · The firewall — PHI crosses never</h2>
+<p class="law"><b>Private health data never leaves the box. Models flow down, receipts flow up, PHI crosses
+never.</b> Training corpora are open/synthetic/cited — never patient records. The patient-facing edge
+organizes and reminds; it does not diagnose. The clinician-grade anchor may train on physician-grade QA but
+is a separate model class with a stamped intended-use. → <a href="/the-firewall">The Firewall</a></p>
+
+<h2>One line to remember</h2>
+<p class="law" style="border-left-color:#4338ca;background:#f5f5ff"><i>"OpenDiabetic is a slow cooker — why?
+because lives depend on us. Truth over compromise."</i></p>
+
+<footer>
+  <p>The rules behind every build at <a href="https://diabeticmodels.com">DiabeticModels</a>.
+  Powered by <a href="https://opendiabetic.com">OpenDiabetic</a>.</p>
+</footer>
+</body>
+</html>

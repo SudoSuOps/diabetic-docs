@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Datasets — find, verify, pull | DiabeticDocs</title>
+<meta name="description" content="How to use OpenDiabetic's deeded datasets: the crystal-clear catalog, SHA-256 verification, deed provenance, and pulling the full corpora from object storage. Verify the file yourself before you trust it.">
+<link rel="canonical" href="https://diabeticdocs.com/datasets">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"TechArticle","name":"Datasets — find, verify, pull",
+ "url":"https://diabeticdocs.com/datasets","inLanguage":"en","dateModified":"2026-06-21",
+ "publisher":{"@type":"Organization","name":"OpenDiabetic","url":"https://opendiabetic.com"}}
+</script>
+</head>
+<body>
+<header>
+  <nav class="top"><strong>🐝 DiabeticDocs</strong>
+    <a href="/">Overview</a> <a href="/the-why">Why</a> <a href="/ecosystem">Ecosystem</a> <a href="/crockpot-cook">Crockpot Cook</a>
+    <a href="/datasets">Datasets</a> <a href="/doctrine">Doctrine</a>
+    <a href="/the-firewall">Firewall</a> <a href="/architecture">Architecture</a>
+  </nav>
+</header>
+
+<h1>Datasets — find, verify, pull</h1>
+<div class="lede">
+  <p><a href="https://diabeticdatasets.com">DiabeticDatasets</a> is the cookbook: open diabetic & medical
+  datasets, donated free to builders — no charge, no strings. Every dataset is <b>crystal-clear</b> and
+  <b>deeded</b>. You never have to take our word for what's in a file.</p>
+  <p style="margin-bottom:0"><b>No PHI, ever.</b> These are open education + synthetic instruction sets
+  and cited facts — never patient records. → <a href="/the-firewall">The Firewall</a></p>
+</div>
+
+<h2>Crystal-clear: verify before you trust</h2>
+<p>"Open" doesn't mean "take our word." Every catalog entry shows its <b>schema, real sample rows, exact
+size, and SHA-256</b> so you can verify the file yourself before a single row enters a cook. Metadata-only
+"open" is just trust-me-bro with extra steps. We reject it.</p>
+<pre><code>// catalog.json — one entry (shape)
+{
+  "slug": "medical-internal-medicine",
+  "rows": 98986,
+  "size": "252.3 MB",
+  "sha256": "38fb516b1bf799ff0a22994614e3f69df8c7544e993698e297815e671d5c7cc3",
+  "full_download": { "url": "https://data.diabeticdatasets.com/medical/...-full.jsonl", "rows": 98986 },
+  "deed": "Swarm & Bee Title Deed v1.0 · two-judge tribunal · Hedera-anchored"
+}</code></pre>
+
+<h2>The format</h2>
+<p>Training rows are chat-format JSONL — system / user / assistant — ready for SFT:</p>
+<pre><code>{"messages":[
+  {"role":"system","content":"You are a board-certified neuroradiologist. ..."},
+  {"role":"user","content":"..."},
+  {"role":"assistant","content":"..."}
+]}</code></pre>
+<p>Cited patient-facing sets may ship as <code>{instruction, response}</code> — normalize to messages at
+build time (see <a href="/crockpot-cook">Crockpot Cook → Step 2</a>).</p>
+
+<h2>Pull it — and SHA-verify every file</h2>
+<p>Full datasets live in object storage (Tigris / S3-compatible). Pull with credentials, then verify each
+file's SHA-256 against the catalog. <b>A mismatch is a hard stop.</b></p>
+<pre><code>import boto3, hashlib, json
+# creds from your .env (never commit them)
+s3 = boto3.client("s3", endpoint_url=ENDPOINT, aws_access_key_id=KEY, aws_secret_access_key=SECRET)
+for m in manifest:                       # {key, sha256, rows} from catalog.json
+    s3.download_file(BUCKET, m["key"], dst)
+    got = sha256_of(dst)
+    assert got == m["sha256"], f"SHA MISMATCH — refuse: {m['key']}"
+    print(f"sha256 OK  rows={count(dst)} (expected {m['rows']})")   # ✓ deeded + verified</code></pre>
+<p><b>Tip:</b> the same logical dataset can appear in more than one bucket/branded domain — list the bucket
+and confirm the object exists before trusting a catalog URL. (On DiabeticAnchor-27B the 417K superset lived
+in the branded-domain bucket, not the default one — the catalog URL alone would have 404'd.)</p>
+
+<h2>Deeded provenance</h2>
+<p>Every dataset carries a <b>deed</b> — a Swarm &amp; Bee Title Deed: graded by a two-judge tribunal,
+Merkle-rooted, and anchored on a public ledger. The deed is how an outside auditor verifies what the data
+<i>is</i> and where it came from, independent of us. Verifiability is the moat.</p>
+
+<h2>Dedup honestly</h2>
+<p>When you combine sets, dedup by content hash and <b>publish the true unique count</b> — never the sum of
+the parts. Superset/subset overlaps are common (a broad "domain-expert" set often <i>contains</i> the
+specialty sets). Claiming the inflated total is the opposite of crystal-clear. → <a href="/doctrine#crystal-clear">Doctrine</a></p>
+
+<h2>Read next</h2>
+<ul>
+  <li><a href="/crockpot-cook">Crockpot Cook</a> — turn a verified dataset into a 5-cap model.</li>
+  <li><a href="/doctrine">The Doctrine</a> — why crystal-clear and deeded are non-negotiable.</li>
+</ul>
+
+<footer>
+  <p>Datasets: <a href="https://diabeticdatasets.com">DiabeticDatasets</a> · facts:
+  <a href="https://diabetictruth.org">DiabeticTruth</a>. Powered by
+  <a href="https://opendiabetic.com">OpenDiabetic</a>.</p>
+</footer>
+</body>
+</html>

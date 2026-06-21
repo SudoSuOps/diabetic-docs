@@ -3,57 +3,81 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DiabeticDocs — how the OpenDiabetic / LocalDiabetic system actually works</title>
-<meta name="description" content="The technical documentation for the OpenDiabetic ecosystem: the home vault, the on-device edge brain, the voice loop, the PHI firewall, the receipts, and the model cook pipeline. Honest status labels — live, in-build, or framework.">
+<title>DiabeticDocs — the OpenDiabetic ecosystem, end to end</title>
+<meta name="description" content="The single source of truth for the OpenDiabetic ecosystem: how the system works, how dev teams use our deeded datasets to crockpot-cook diabetic models, the why, the how, the doctrine. Open-source, verified, vetted. No vaporware.">
 <link rel="canonical" href="https://diabeticdocs.com/">
 <link rel="stylesheet" href="/style.css">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"TechArticle","name":"DiabeticDocs — system overview",
- "url":"https://diabeticdocs.com/","inLanguage":"en","dateModified":"2026-06-20",
+{"@context":"https://schema.org","@type":"TechArticle","name":"DiabeticDocs — the OpenDiabetic ecosystem",
+ "url":"https://diabeticdocs.com/","inLanguage":"en","dateModified":"2026-06-21",
  "publisher":{"@type":"Organization","name":"OpenDiabetic","url":"https://opendiabetic.com"},
- "about":"Architecture of the OpenDiabetic / LocalDiabetic diabetes system"}
+ "about":"The complete OpenDiabetic ecosystem: platform, datasets, and the crockpot-cook pipeline"}
 </script>
 </head>
 <body>
 <header>
-  <nav class="top"><strong>🐝 DiabeticDocs</strong> <a href="/">Overview</a> <a href="/the-firewall">The Firewall</a> <a href="/architecture">Architecture</a></nav>
+  <nav class="top"><strong>🐝 DiabeticDocs</strong>
+    <a href="/">Overview</a>
+    <a href="/the-why">Why</a> <a href="/ecosystem">Ecosystem</a>
+    <a href="/crockpot-cook">Crockpot Cook</a>
+    <a href="/datasets">Datasets</a>
+    <a href="/doctrine">Doctrine</a>
+    <a href="/the-firewall">Firewall</a>
+    <a href="/architecture">Architecture</a>
+  </nav>
 </header>
 
-<h1>How the system actually works</h1>
+<h1>The entire diabetic ecosystem, in one place</h1>
 <div class="lede">
-  <p>DiabeticDocs is the honest technical record of what we've built. Two halves, one law:
-  <b>OpenDiabetic</b> is the compute + trust foundation (the hive); <b>LocalDiabetic</b> is the
-  home vault and the on-device helper (the bee on your shoulder). Between them sits one rule —
-  <a href="/the-firewall">the firewall</a> — that never bends.</p>
-  <p style="margin-bottom:0"><b>Every status here is labeled honestly:</b>
-  <span class="st live">LIVE</span> = running and verified ·
+  <p>DiabeticDocs is the <b>single source of truth</b> for the OpenDiabetic ecosystem. Not marketing —
+  the reproducible record. It covers both halves: <b>(1)</b> what the system <i>is</i> (the vault, the
+  firewall, the edge brain), and <b>(2)</b> how dev teams actually <b>use our deeded datasets and
+  crockpot-cook</b> diabetic models — the why, the how, the doctrine.</p>
+  <p style="margin-bottom:0">We are open-source. Everything here is built to be <b>verified and vetted</b>
+  by anyone: cited datasets, SHA-256-checked downloads, reproducible recipes, deeded receipts.
+  <span class="st live">LIVE</span> = running & verified ·
   <span class="st build">IN BUILD</span> = partly done ·
   <span class="st frame">FRAMEWORK</span> = designed, not yet a service. No vaporware.</p>
 </div>
 
 <h2>The one law</h2>
-<p class="law"><b>Private health data (PHI) never leaves your box. Models flow down, receipts flow up, PHI crosses never.</b> The vault holds your records; the cloud only ever receives non-PHI receipts, open models, and templates. Read it in full: <a href="/the-firewall">The Firewall →</a></p>
+<p class="law"><b>Private health data (PHI) never leaves your box. Models flow down, receipts flow up, PHI
+crosses never.</b> The vault holds your records; the cloud only ever receives non-PHI receipts, open
+models, and templates. → <a href="/the-firewall">The Firewall</a></p>
 
-<h2>The components</h2>
+<h2>For dev teams — start here</h2>
 <table>
-<tr><th>Component</th><th>What it does</th><th>Status</th></tr>
-<tr><td><b>LocalDiabetic Home Vault</b></td><td>A 15-folder structure on your own NAS holding your records, meds, labs, foot-care logs, appointments. Git-tracked. The only place PHI lives at rest.</td><td><span class="st live">LIVE</span></td></tr>
-<tr><td><b>The Nudge</b> (reminder engine)</td><td>Fires gentle reminders (foot check, meds, appointments). Structurally PHI-blind: it never reads a record — only the generic nudge you declared. Detail stays behind a pointer on the box.</td><td><span class="st live">LIVE</span></td></tr>
-<tr><td><b>The Edge Brain</b></td><td>An on-device small model (on a Jetson) that organizes and explains your notes. Processes records in RAM only, never persists PHI, mints a non-PHI receipt for every call.</td><td><span class="st live">LIVE</span></td></tr>
-<tr><td><b>Bee (voice)</b></td><td>Speak to your vault: on-device speech-to-text (faster-whisper) → organize → text-to-speech read-back (Piper). All on-box; audio never leaves.</td><td><span class="st build">IN BUILD</span></td></tr>
-<tr><td><b>The Nudge → your wrist</b></td><td>Self-hosted notifications deliver the generic nudge to your phone/watch. Only non-PHI text ever crosses.</td><td><span class="st live">LIVE</span></td></tr>
-<tr><td><b>DiabeticModels</b></td><td>Small open specialist models, cooked on cited corpora, beat-base-proven, hosted to flow down to the edge brain.</td><td><span class="st build">IN BUILD</span></td></tr>
-<tr><td><b>Ride / shoe-shipping</b></td><td>The human continuum — a ride to the doctor, diabetic shoes shipped. Real mission, not yet a live service.</td><td><span class="st frame">FRAMEWORK</span></td></tr>
+<tr><th>Guide</th><th>What it gives you</th></tr>
+<tr><td><b><a href="/the-why">The Why</a></b></td><td>Why OpenDiabetic is a <i>slow cooker</i>. The founding mission. Truth over compromise — because a diabetic acts on the output with their own body.</td></tr>
+<tr><td><b><a href="/crockpot-cook">Crockpot Cook</a></b></td><td>The full end-to-end cook guide: clean the rig → use a dataset → canary-then-cook → flightsheet → beat-base → ship. Real commands. The worked example (DiabeticAnchor-27B).</td></tr>
+<tr><td><b><a href="/datasets">Datasets</a></b></td><td>How to find, verify, and pull our deeded datasets. Crystal-clear: schema, samples, size, SHA-256 — verify the file yourself before you trust it.</td></tr>
+<tr><td><b><a href="/doctrine">The Doctrine</a></b></td><td>The non-negotiables: 5-cap-only, best-in-class-not-budget, clean-rig, crystal-clear, deeded, beat-base-or-kill, visible. The rules every cook follows.</td></tr>
 </table>
 
-<h2>Read next</h2>
-<ul>
-  <li><a href="/the-firewall">The Firewall</a> — the one invariant, and exactly how it's enforced in code.</li>
-  <li><a href="/architecture">Architecture</a> — the components, the data flow, and the receipts.</li>
-</ul>
+<h2>The ecosystem map</h2>
+<table>
+<tr><th>Surface</th><th>Role in the house</th><th>Status</th></tr>
+<tr><td><a href="https://opendiabetic.com"><b>OpenDiabetic</b></a></td><td>The hive — the sovereign compute + trust foundation. The rigs, the receipts, the model cooks.</td><td><span class="st build">IN BUILD</span></td></tr>
+<tr><td><b>LocalDiabetic</b></td><td>The healers — the home vault + on-device helper (the bee on your shoulder). PHI lives here, only here.</td><td><span class="st live">LIVE</span></td></tr>
+<tr><td><a href="https://diabeticdatasets.com"><b>DiabeticDatasets</b></a></td><td>The cookbook — open, deeded, crystal-clear datasets, donated free to builders. → <a href="/datasets">how to use them</a></td><td><span class="st live">LIVE</span></td></tr>
+<tr><td><b>Diabetic Crockpot Cooks</b></td><td>The menu — the 5-cap-only diabetic model cooks. Slow-cooked, flagship-grade only. → <a href="/crockpot-cook">how it's done</a></td><td><span class="st build">IN BUILD</span></td></tr>
+<tr><td><a href="https://diabetictruth.org"><b>DiabeticTruth</b></a></td><td>The cited patient facts — the truth layer our models learn from. No source, no publish.</td><td><span class="st live">LIVE</span></td></tr>
+<tr><td><a href="https://diabeticmodels.com"><b>DiabeticModels</b></a></td><td>The builds — show + host. Every model with its flightsheet and beat-base receipt.</td><td><span class="st build">IN BUILD</span></td></tr>
+<tr><td><a href="https://diabeticdonation.com"><b>DiabeticDonation</b></a></td><td>The give-back — compute income recycled into the people: rides, diabetic shoes, the continuum. No charge, no strings.</td><td><span class="st frame">FRAMEWORK</span></td></tr>
+</table>
+
+<h2>How it all connects</h2>
+<p>One cited-fact spine runs through everything: <b>DiabeticTruth</b> publishes verifiable facts →
+<b>DiabeticDatasets</b> turns them into deeded training corpora → <b>Diabetic Crockpot Cooks</b>
+slow-cooks them into models on <b>OpenDiabetic</b> compute → the models <b>flow down</b> to the
+<b>LocalDiabetic</b> edge brain on a diabetic's own box → and never does PHI flow back up, only receipts.
+The whole loop is <a href="/doctrine">doctrine-governed</a> and verifiable end to end.</p>
 
 <footer>
-  <p>The facts our models learn are published at <a href="https://diabetictruth.org">DiabeticTruth</a>; the builds are shown at <a href="https://diabeticmodels.com">DiabeticModels</a>. Powered by <a href="https://opendiabetic.com">OpenDiabetic</a>.</p>
+  <p>Open-source · verified · vetted. Facts at <a href="https://diabetictruth.org">DiabeticTruth</a>,
+  datasets at <a href="https://diabeticdatasets.com">DiabeticDatasets</a>, builds at
+  <a href="https://diabeticmodels.com">DiabeticModels</a>. Powered by
+  <a href="https://opendiabetic.com">OpenDiabetic</a>.</p>
 </footer>
 </body>
 </html>
