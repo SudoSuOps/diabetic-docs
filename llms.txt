@@ -28,4 +28,6 @@ output with their own body, so every cook is 5-cap (premium), deeded, beat-base-
 - DiabeticTruth (the cited patient facts): https://diabetictruth.org
 - DiabeticDatasets (the cookbook — open, deeded datasets): https://diabeticdatasets.com
 - DiabeticModels (the builds — show + host): https://diabeticmodels.com
+- DiabeticLedger (the proof — deeds + hash-chained receipts, audit provenance independently): https://diabeticledger.com
+- DiabeticNode (the compute — Blackwell fleet, Synology vaults, Jetson edge, the device swarm): https://diabeticnode.com
 - DiabeticDonation (the give-back — rides, shoes, the continuum): https://diabeticdonation.com
