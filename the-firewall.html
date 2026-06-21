@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Firewall — the one invariant of the OpenDiabetic system — DiabeticDocs</title>
+<meta name="description" content="The PHI firewall: private health data never leaves your box. Models flow down, receipts flow up, PHI crosses never. How it's enforced structurally in the LocalDiabetic edge brain.">
+<link rel="canonical" href="https://diabeticdocs.com/the-firewall">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"TechArticle","name":"The Firewall",
+ "url":"https://diabeticdocs.com/the-firewall","dateModified":"2026-06-20",
+ "publisher":{"@type":"Organization","name":"OpenDiabetic","url":"https://opendiabetic.com"}}
+</script>
+</head>
+<body>
+<header>
+  <nav class="top"><strong>🐝 DiabeticDocs</strong> <a href="/">Overview</a> <a href="/the-firewall">The Firewall</a> <a href="/architecture">Architecture</a></nav>
+</header>
+
+<h1>The Firewall</h1>
+<p class="law"><b>Private health data (PHI) never leaves your box. Models flow down, receipts flow up, PHI crosses never.</b></p>
+
+<p>This is the one rule the whole system is built around. It is not a privacy <em>policy</em> you have to trust — it's a structural property you can verify. Two sides, opposite invariants:</p>
+
+<h2>The two sides</h2>
+<table>
+<tr><th>LocalDiabetic (the vault, on your NAS)</th><th>OpenDiabetic (the hive, the cloud/compute)</th></tr>
+<tr><td>Records <b>never leave</b> the box.</td><td>Cloud records <b>never enter</b> a person's vault.</td></tr>
+<tr><td>Holds PHI at rest — the only place it lives.</td><td>Holds open models, templates, non-PHI receipts.</td></tr>
+<tr><td>Receives models flowing <b>down</b>.</td><td>Receives receipts flowing <b>up</b>.</td></tr>
+</table>
+
+<h2>How it's enforced (not promised — built)</h2>
+
+<h3>1. The reminder engine never reads a record</h3>
+<p>The Nudge emits only the generic reminder text you declared (e.g. "Time for your foot check"). The medical detail stays in the vault behind a pointer you follow on the box. PHI cannot leak to your phone because the engine never loads PHI in the first place.</p>
+
+<h3>2. The edge brain processes PHI in RAM only — never to disk</h3>
+<p>When the vault sends a note to the on-device model to organize, it exists only in memory for that one request. In the edge brain's code, the <em>only</em> file ever written is a non-PHI receipt ledger. Record content never reaches a disk write, so <code>phi_persisted</code> is structurally always <code>false</code>.</p>
+<pre><code># the only write path in the edge brain
+def _append_receipt(rec):       # rec = lengths + hashes + flags, NO content
+    with open(LEDGER, "a") as f:
+        f.write(json.dumps(rec) + "\n")
+# record content is passed to the model in RAM and returned — never to any open(..., "w")</code></pre>
+
+<h3>3. It organizes and educates — it never diagnoses</h3>
+<p>The on-device model is scoped to organize, summarize, and draft reminders. A request to diagnose is refused outright (HTTP 422). This keeps the system a filing cabinet, not a medical device.</p>
+
+<h3>4. Only non-PHI receipts can flow up</h3>
+<p>Every action mints a hash-chained receipt carrying lengths, durations, a model name, and honest flags (<code>phi_touched</code>, <code>phi_persisted: false</code>) — and <b>no record content</b>. These are safe to ship to the hive. The content is not.</p>
+
+<h2>Why it matters</h2>
+<ul>
+  <li><b>Trust:</b> you don't take our word for it — the data path makes leakage impossible, and the receipts prove what ran.</li>
+  <li><b>Regulatory posture:</b> a filing cabinet you control, not a covered entity holding your data; organization, not diagnosis.</li>
+  <li><b>The product moat:</b> "the AI trust-me-bro is over." Verifiable beats convenient.</li>
+</ul>
+
+<footer><p><a href="/architecture">Next: Architecture →</a> · Powered by <a href="https://opendiabetic.com">OpenDiabetic</a>.</p></footer>
+</body>
+</html>

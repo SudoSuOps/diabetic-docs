@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Architecture — components, data flow, and receipts — DiabeticDocs</title>
+<meta name="description" content="The OpenDiabetic / LocalDiabetic architecture: the home vault, the PHI-blind nudge engine, the on-device edge brain, the voice loop, and the hash-chained receipts. How the pieces connect.">
+<link rel="canonical" href="https://diabeticdocs.com/architecture">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"TechArticle","name":"Architecture",
+ "url":"https://diabeticdocs.com/architecture","dateModified":"2026-06-20",
+ "publisher":{"@type":"Organization","name":"OpenDiabetic","url":"https://opendiabetic.com"}}
+</script>
+</head>
+<body>
+<header>
+  <nav class="top"><strong>🐝 DiabeticDocs</strong> <a href="/">Overview</a> <a href="/the-firewall">The Firewall</a> <a href="/architecture">Architecture</a></nav>
+</header>
+
+<h1>Architecture</h1>
+<p class="lede">The pieces, and how a record moves through them without ever leaving home.</p>
+
+<h2>The map</h2>
+<pre><code>            ON YOUR PREMISES (the LAN)                          THE HIVE (cloud)
+ ┌─────────────────────────────────────────────────┐
+ │  Home Vault (NAS)          Edge Brain (Jetson)   │      models flow DOWN
+ │  ├─ your records (PHI)  ─►  organizes in RAM ──┐  │   ◄─────────────────────
+ │  ├─ the Nudge engine       (never to disk)     │  │
+ │  └─ dashboard + API   ◄──── organized note ◄───┘  │      receipts flow UP
+ │            │                                      │   ─────────────────────►
+ │            ▼  generic nudge only                  │      (non-PHI only)
+ │   self-hosted notify ──────────────────────────────────►  your phone / watch
+ └─────────────────────────────────────────────────┘
+                      ═══ THE FIREWALL ═══  PHI crosses NEVER</code></pre>
+
+<h2>Components</h2>
+
+<h3>Home Vault <span class="st live">LIVE</span></h3>
+<p>A 15-folder structure on your NAS: emergency card, medications, doctors/pharmacy, insurance, hospital records, labs, foot care, wound care, supplies, food, appointments, family helpers, care packs, organized notes, receipts. Git-tracked. This is the only place PHI lives at rest.</p>
+
+<h3>The Nudge engine <span class="st live">LIVE</span></h3>
+<p>Cron-driven reminders. Structurally PHI-blind — it emits only the generic text you declared and a pointer (<code>vault_ref</code>) to the detail, which stays on the box. Supports daily / weekly / interval / once schedules, acknowledgement, and family escalation if a reminder isn't acted on.</p>
+
+<h3>The Edge Brain <span class="st live">LIVE</span></h3>
+<p>A small open model on a Jetson, on your LAN. The vault <em>pushes</em> a note; the model organizes or explains it in RAM and returns the result. It never persists PHI, refuses diagnosis, and mints a non-PHI receipt per call. It also presents a model-compatible proxy so every model call the dashboard makes inherits the firewall and a receipt.</p>
+
+<h3>Bee — the voice loop <span class="st build">IN BUILD</span></h3>
+<p>Push-to-talk → on-device speech-to-text (faster-whisper, runs on CPU to stay off the model's GPU) → organize via the edge brain → spoken read-back (Piper). Audio is rendered and discarded; nothing is uploaded. Proven today from text and from a recorded clip; a USB microphone is the remaining hardware step for live capture.</p>
+
+<h3>Receipts <span class="st live">LIVE</span></h3>
+<p>Every meaningful action writes a hash-chained receipt: a node id, model, task, character lengths, duration, and honest flags — <code>phi_touched</code> and <code>phi_persisted: false</code> — with <b>no record content</b>. A verify endpoint walks the chain and detects any tampering. This is how the system proves what ran without exposing what it ran on.</p>
+
+<h2>A record's journey (organize a note)</h2>
+<ol>
+  <li>You add a messy note in the vault (or speak it to Bee).</li>
+  <li>The dashboard sends the text to the edge brain over the LAN.</li>
+  <li>The model organizes it <b>in RAM</b>; a receipt is minted (<code>phi_persisted: false</code>).</li>
+  <li>The clean note is written back into your vault's organized-notes folder.</li>
+  <li>The receipt (non-PHI) may flow up to the hive. The note never does.</li>
+</ol>
+
+<footer><p>The law behind all of this: <a href="/the-firewall">The Firewall</a>. Powered by <a href="https://opendiabetic.com">OpenDiabetic</a>.</p></footer>
+</body>
+</html>

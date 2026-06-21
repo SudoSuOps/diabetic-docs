@@ -1,0 +1,20 @@
+# DiabeticDocs
+
+> The technical documentation for the OpenDiabetic / LocalDiabetic system. Describes the home
+> vault, the PHI-blind reminder engine, the on-device edge brain, the voice loop, the PHI
+> firewall, and the hash-chained receipts. Every component carries an honest status label —
+> LIVE (running and verified), IN BUILD (partly done), or FRAMEWORK (designed, not yet a service).
+
+The defining rule of the system: private health data never leaves the user's box; models flow
+down, receipts flow up, PHI crosses never. This is enforced structurally (the edge brain's only
+file-write is a non-PHI receipt ledger; the reminder engine never reads a record), not by policy.
+
+## Pages
+- [Overview](https://diabeticdocs.com/): the two halves (OpenDiabetic hive + LocalDiabetic vault) and the component map with status.
+- [The Firewall](https://diabeticdocs.com/the-firewall): the one invariant and exactly how it is enforced in code.
+- [Architecture](https://diabeticdocs.com/architecture): components, data flow, and the receipts.
+
+## Related
+- DiabeticTruth (the cited patient facts): https://diabetictruth.org
+- DiabeticModels (the model builds, shown + hosted): https://diabeticmodels.com
+- Publisher: OpenDiabetic (https://opendiabetic.com)

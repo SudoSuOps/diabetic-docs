@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DiabeticDocs — how the OpenDiabetic / LocalDiabetic system actually works</title>
+<meta name="description" content="The technical documentation for the OpenDiabetic ecosystem: the home vault, the on-device edge brain, the voice loop, the PHI firewall, the receipts, and the model cook pipeline. Honest status labels — live, in-build, or framework.">
+<link rel="canonical" href="https://diabeticdocs.com/">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"TechArticle","name":"DiabeticDocs — system overview",
+ "url":"https://diabeticdocs.com/","inLanguage":"en","dateModified":"2026-06-20",
+ "publisher":{"@type":"Organization","name":"OpenDiabetic","url":"https://opendiabetic.com"},
+ "about":"Architecture of the OpenDiabetic / LocalDiabetic diabetes system"}
+</script>
+</head>
+<body>
+<header>
+  <nav class="top"><strong>🐝 DiabeticDocs</strong> <a href="/">Overview</a> <a href="/the-firewall">The Firewall</a> <a href="/architecture">Architecture</a></nav>
+</header>
+
+<h1>How the system actually works</h1>
+<div class="lede">
+  <p>DiabeticDocs is the honest technical record of what we've built. Two halves, one law:
+  <b>OpenDiabetic</b> is the compute + trust foundation (the hive); <b>LocalDiabetic</b> is the
+  home vault and the on-device helper (the bee on your shoulder). Between them sits one rule —
+  <a href="/the-firewall">the firewall</a> — that never bends.</p>
+  <p style="margin-bottom:0"><b>Every status here is labeled honestly:</b>
+  <span class="st live">LIVE</span> = running and verified ·
+  <span class="st build">IN BUILD</span> = partly done ·
+  <span class="st frame">FRAMEWORK</span> = designed, not yet a service. No vaporware.</p>
+</div>
+
+<h2>The one law</h2>
+<p class="law"><b>Private health data (PHI) never leaves your box. Models flow down, receipts flow up, PHI crosses never.</b> The vault holds your records; the cloud only ever receives non-PHI receipts, open models, and templates. Read it in full: <a href="/the-firewall">The Firewall →</a></p>
+
+<h2>The components</h2>
+<table>
+<tr><th>Component</th><th>What it does</th><th>Status</th></tr>
+<tr><td><b>LocalDiabetic Home Vault</b></td><td>A 15-folder structure on your own NAS holding your records, meds, labs, foot-care logs, appointments. Git-tracked. The only place PHI lives at rest.</td><td><span class="st live">LIVE</span></td></tr>
+<tr><td><b>The Nudge</b> (reminder engine)</td><td>Fires gentle reminders (foot check, meds, appointments). Structurally PHI-blind: it never reads a record — only the generic nudge you declared. Detail stays behind a pointer on the box.</td><td><span class="st live">LIVE</span></td></tr>
+<tr><td><b>The Edge Brain</b></td><td>An on-device small model (on a Jetson) that organizes and explains your notes. Processes records in RAM only, never persists PHI, mints a non-PHI receipt for every call.</td><td><span class="st live">LIVE</span></td></tr>
+<tr><td><b>Bee (voice)</b></td><td>Speak to your vault: on-device speech-to-text (faster-whisper) → organize → text-to-speech read-back (Piper). All on-box; audio never leaves.</td><td><span class="st build">IN BUILD</span></td></tr>
+<tr><td><b>The Nudge → your wrist</b></td><td>Self-hosted notifications deliver the generic nudge to your phone/watch. Only non-PHI text ever crosses.</td><td><span class="st live">LIVE</span></td></tr>
+<tr><td><b>DiabeticModels</b></td><td>Small open specialist models, cooked on cited corpora, beat-base-proven, hosted to flow down to the edge brain.</td><td><span class="st build">IN BUILD</span></td></tr>
+<tr><td><b>Ride / shoe-shipping</b></td><td>The human continuum — a ride to the doctor, diabetic shoes shipped. Real mission, not yet a live service.</td><td><span class="st frame">FRAMEWORK</span></td></tr>
+</table>
+
+<h2>Read next</h2>
+<ul>
+  <li><a href="/the-firewall">The Firewall</a> — the one invariant, and exactly how it's enforced in code.</li>
+  <li><a href="/architecture">Architecture</a> — the components, the data flow, and the receipts.</li>
+</ul>
+
+<footer>
+  <p>The facts our models learn are published at <a href="https://diabetictruth.org">DiabeticTruth</a>; the builds are shown at <a href="https://diabeticmodels.com">DiabeticModels</a>. Powered by <a href="https://opendiabetic.com">OpenDiabetic</a>.</p>
+</footer>
+</body>
+</html>
