@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/bee.svg" type="image/svg+xml">
+<title>Setup — run the bee on your Mac | DiabeticDocs</title>
+<meta name="description" content="Run the LocalDiabetic diabetic-smart helper on your own Mac in a few minutes — free, private, offline. Step-by-step with Ollama or LM Studio. Your information never leaves your house.">
+<link rel="canonical" href="https://diabeticdocs.com/setup">
+<meta property="og:image" content="https://diabeticdocs.com/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="https://diabeticdocs.com/assets/og.png">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#0B0F14">
+<meta name="author" content="OpenDiabetic · Swarm and Bee LLC">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DiabeticDocs">
+<meta property="og:url" content="https://diabeticdocs.com/setup">
+<meta property="og:title" content="Setup — run the bee on your Mac | DiabeticDocs">
+<meta property="og:description" content="Run the diabetic-smart helper on your own machine — free, private, offline. 🐝">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <nav class="top"><strong><span class="bee" aria-hidden="true">🐝</span> Diabetic<b>Docs</b></strong>
+    <a href="/">Overview</a> <a href="/setup">Setup</a> <a href="/the-why">Why</a> <a href="/ecosystem">Ecosystem</a> <a href="/crockpot-cook">Crockpot Cook</a>
+    <a href="/datasets">Datasets</a> <a href="/doctrine">Doctrine</a>
+    <a href="/the-firewall">Firewall</a> <a href="/architecture">Architecture</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <p class="eyebrow">Getting started</p>
+    <h1>Run the bee on your Mac</h1>
+    <p class="lede">Get the diabetic-smart helper running on your own machine in a few minutes — <b>free, private, and offline.</b> Nothing leaves your house. We just help you carry the day. 🐝</p>
+  </section>
+
+  <section>
+    <h2>What you'll need</h2>
+    <p class="lede">A Mac (Mac&nbsp;Mini, MacBook, iMac) with about <b>8&nbsp;GB+ of memory</b> and <b>3&nbsp;GB of free disk</b>. The compact <b>DiabeticDaily-4B</b> model is a ~2.7&nbsp;GB download and runs comfortably on a Mac&nbsp;Mini. Pick either path below — both keep everything 100% on your machine.</p>
+  </section>
+
+  <section>
+    <h2>Option A — Ollama <span class="byline">(quickest, one command)</span></h2>
+    <ol class="flow">
+      <li>Download <b>Ollama</b> from <a href="https://ollama.com" target="_blank" rel="noopener">ollama.com</a> and drag it into your Applications folder.</li>
+      <li>Open <b>Terminal</b> (press ⌘-Space, type "Terminal"), paste this line, and press Return:</li>
+    </ol>
+<pre><code>ollama run hf.co/SwarmandBee/DiabeticDaily-4B:Q4_K_M</code></pre>
+    <ol class="flow" start="3">
+      <li>It downloads the model once (~2.7&nbsp;GB), then you can talk to the bee right in the terminal. Try: <i>"Give me a quick win for today."</i> Type <code>/bye</code> to exit.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Option B — LM Studio <span class="byline">(no terminal, point &amp; click)</span></h2>
+    <ol class="flow">
+      <li>Download <b>LM Studio</b> from <a href="https://lmstudio.ai" target="_blank" rel="noopener">lmstudio.ai</a> and open it.</li>
+      <li>In the search box, type <b>SwarmandBee DiabeticDaily-4B</b> and download the <b>Q4_K_M</b> GGUF file.</li>
+      <li>Load the model and start chatting in the app. That's it — a private bee, running on your Mac.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Got a bigger Mac?</h2>
+    <p class="lede">The same family comes in three sizes — the bigger the machine, the bigger the brain. <b>DiabeticDaily-9B</b> and <b>DiabeticDaily-27B</b> are on Hugging Face too. Browse them all at <a href="https://huggingface.co/SwarmandBee" target="_blank" rel="noopener">huggingface.co/SwarmandBee</a>.</p>
+  </section>
+
+  <section>
+    <h2>What this is — and what's coming</h2>
+    <div class="card">
+      <p>✅ <b>What you get today:</b> the bee's <b>brain</b> — a diabetic-smart helper that <b>educates and organizes</b>, running entirely on your Mac. No cloud, no account, no data leaving your house.</p>
+      <p>🛠️ <b>What we're still building:</b> the full <b>LocalDiabetic box</b> — your records, reminders, supplies and care notes wired into the helper with a simple dashboard. That part isn't a one-click download yet, and we're <b>not in the app store yet</b>. We won't pretend otherwise.</p>
+      <p>🐝 <b>Want the whole thing?</b> We're setting up our first members by hand and learning from every one. Tell us you're in — we'll help you stand it up, and you'll shape what we build next.</p>
+      <p><a class="build" href="mailto:build@opendiabetic.com?subject=I want to be a founding member">Become a founding member →</a></p>
+    </div>
+  </section>
+
+  <section>
+    <p class="legal">General education, not medical advice. The bee helps you organize and prepare — it never diagnoses or changes your care. Your records stay on your machine; for an emergency, call 911.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="fmark"><span class="bee" aria-hidden="true">🐝</span> Diabetic<b>Docs</b></p>
+    <p>The single source of truth for the OpenDiabetic ecosystem · open-source · verified · vetted.</p>
+    <p class="links">
+      <a href="https://opendiabetic.com">OpenDiabetic</a> ·
+      <a href="https://diabeticdocs.com">DiabeticDocs</a> ·
+      <a href="https://diabeticnode.com">DiabeticNode</a> ·
+      <a href="https://diabeticdatasets.com">DiabeticDatasets</a> ·
+      <a href="https://diabeticmodels.com">DiabeticModels</a> ·
+      <a href="https://diabetictruth.org">DiabeticTruth</a> ·
+      <a href="https://diabeticledger.com">DiabeticLedger</a> ·
+      <a href="https://diabeticdonation.com">DiabeticDonation</a> ·
+      <a href="https://localdiabetic.com">LocalDiabetic</a>
+    </p>
+    <p class="contact"><a href="mailto:build@opendiabetic.com">build@opendiabetic.com</a> ·
+      HQ Jupiter, Florida · <a href="tel:+15615327120">561.532.7120</a> ·
+      <a href="https://x.com/opendiabetics" rel="me">@opendiabetics</a></p>
+    <p class="motto">Truth over compromise. We are math and code.</p>
+    <p class="legal">Owned &amp; operated by <b>Swarm and Bee LLC</b> · DBA Swarm &amp; Bee AI · Florida<br>
+      UEI L9EXVH9L9VU6 · CAGE 20YM3 · D-U-N-S 138652395 · Registered &amp; active in SAM.gov<br>
+      &copy; 2026 DefendableOS · Proof of Execution.</p>
+  </div>
+</footer>
+</body>
+</html>
