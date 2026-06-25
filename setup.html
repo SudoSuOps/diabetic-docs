@@ -69,6 +69,39 @@
   </section>
 
   <section>
+    <h2>Put the dashboard on your desktop &amp; phone <span class="byline">(install it like an app)</span></h2>
+    <p class="lede">Once your box is running, its <b>dashboard</b> is a web app at <code>http://&lt;your-box-ip&gt;:8081</code> (e.g. your NAS on your home network). You can pin it like a native app — bee icon and all — no app store needed.</p>
+    <h3>Desktop — Chrome · Brave · Edge (any OS, incl. Ubuntu)</h3>
+    <ol class="flow">
+      <li>Open the dashboard in your browser.</li>
+      <li>Menu → <b>More tools → Create shortcut…</b> (Brave/Chrome), or <b>Apps → Install this site as an app</b> (Edge).</li>
+      <li>Check <b>"Open as window"</b> → <b>Create</b>. It lands in your apps with the 🐝 icon — pin it to your dock/taskbar or drag it to the desktop.</li>
+    </ol>
+    <h3>iPhone / iPad — Safari</h3>
+    <ol class="flow">
+      <li>Open the dashboard in <b>Safari</b>.</li>
+      <li>Tap <b>Share</b> (□↑) → <b>Add to Home Screen</b>.</li>
+      <li>Name it, tap <b>Add</b> — it opens fullscreen, like a real app.</li>
+    </ol>
+    <p class="lede">This works on your <b>home network</b>. To reach it from <i>anywhere</i> — privately — set up Tailscale next.</p>
+  </section>
+
+  <section>
+    <h2>Reach your box anywhere — privately <span class="byline">(Tailscale)</span></h2>
+    <p class="lede">Your box stays <b>off the public internet</b> — your records never leave home, by design. To reach the dashboard when you're <b>away</b>, use a private VPN: <a href="https://tailscale.com" target="_blank" rel="noopener">Tailscale</a>. It gives your devices an encrypted private line straight to your box, and it is <b>never exposed to the internet.</b></p>
+    <ol class="flow">
+      <li>Install Tailscale on your <b>box</b> — Synology: <b>Package Center → Tailscale</b>; Linux: <code>curl -fsSL https://tailscale.com/install.sh | sh</code>. Then <code>tailscale up</code> and log in.</li>
+      <li>Install the <b>Tailscale app</b> on your phone and laptop, and log into the <b>same account</b>.</li>
+      <li>Get your box's private address:</li>
+    </ol>
+<pre><code>tailscale ip -4        # a 100.x.y.z address</code></pre>
+    <ol class="flow" start="4">
+      <li>Use that address for the dashboard from anywhere: <code>http://100.x.y.z:8081</code>. Install it to your home screen / desktop with the Tailscale address and it works <b>home and away</b>.</li>
+    </ol>
+    <p class="lede">🔒 <b>The right way:</b> a private tailnet, encrypted end-to-end. <b>Never</b> expose a medical dashboard to the public internet with a plain port-forward or public tunnel.</p>
+  </section>
+
+  <section>
     <h2>What this is — and what's coming</h2>
     <div class="card">
       <p>✅ <b>What you get today:</b> the bee's <b>brain</b> — a diabetic-smart helper that <b>educates and organizes</b>, running entirely on your Mac. No cloud, no account, no data leaving your house.</p>
